@@ -176,5 +176,18 @@ namespace chooselesson
                 File.WriteAllText(saveFileDialog.FileName, json ); 
             }
         }
+
+       /* private void btnOpen_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter= "JSON files (*.json)|.json|All files (*.*)|*.*";
+            if(openFileDialog.ShowDialog()==true)
+            {
+                string fileContent = File.ReadAllText(openFileDialog.FileName);
+                T result = JsonSerializer.Deserialize<T>(fileContent);
+                return result;
+            }
+            return default(T);
+        }*/
     }
 }
