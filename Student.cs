@@ -13,7 +13,7 @@ namespace chooselesson
 
         public override string ToString()
         {
-            return $" {StudentId}    {StudentName}";
+            return $"{StudentId}    {StudentName}";
         }
     }
 }

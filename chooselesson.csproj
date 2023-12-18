@@ -7,4 +7,12 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="teacher.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="teacher.png" />
+  </ItemGroup>
+
 </Project>

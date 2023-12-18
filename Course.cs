@@ -13,6 +13,12 @@ namespace chooselesson
         public Course(Teacher tutor)
         {
             Tutor = tutor;
-        } 
+        }
+
+        public override string ToString()
+        {
+            return $"{CourseName} {Type} {Point}學分 {OpeningClass}";
+        }
+
     }
 }
