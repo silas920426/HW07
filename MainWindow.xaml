@@ -80,7 +80,7 @@
             <Button x:Name="btnWithdrawl" Content="退選" Width="80" Height="50" VerticalAlignment="Center" Margin="0,20,0,0" FontSize="14" FontWeight="Bold" Click="btnWithdrawl_Click"/>
             <Button x:Name="btnSave" Content="儲存紀錄" Width="80" Height="50" VerticalAlignment="Center" Margin="0,20,0,0" FontSize="14" FontWeight="Bold" Click="btnSave_Click"/>
            
-            <Button x:Name="btnOpen" Content="開啟紀錄" Width="80" Height="50" VerticalAlignment="Center" Margin="0,20,0,0" FontSize="14" FontWeight="Bold" />
+            
         </StackPanel>
         <ListView x:Name="lvRecord" Grid.Row="1" Grid.Column="2" Background="#FFD58FE6" ItemsSource="{Binding records}" SelectionChanged="lvRecord_SelectionChanged">
             <ListView.View>

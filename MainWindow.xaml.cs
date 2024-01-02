@@ -46,7 +46,7 @@ namespace chooselesson
         private void InitializeCourse()
         {
             Teacher teacher1 = new Teacher { TeacherName = "吳庭旭" };
-            teacher1.TeachingCourses.Add(new Course(teacher1) { CourseName="視窗程式設計" , OpeningClass= "四技二甲",Point=3, Type="選修"});
+            teacher1.TeachingCourses.Add(new Course(teacher1) { CourseName = "視窗程式設計", OpeningClass = "四技二甲", Point = 3, Type = "選修" });
             teacher1.TeachingCourses.Add(new Course(teacher1) { CourseName = "視窗程式設計", OpeningClass = "四技二乙", Point = 3, Type = "選修" });
             teacher1.TeachingCourses.Add(new Course(teacher1) { CourseName = "視窗程式設計", OpeningClass = "四技二丙", Point = 3, Type = "選修" });
             teacher1.TeachingCourses.Add(new Course(teacher1) { CourseName = "視窗程式設計", OpeningClass = "五專三甲", Point = 3, Type = "必修" });
@@ -66,23 +66,38 @@ namespace chooselesson
             teachers.Add(teacher3);
             tvTeacher.ItemsSource = teachers;
 
-            foreach(Teacher teacher in teachers)
+            foreach (Teacher teacher in teachers)
             {
-                foreach(Course course in teacher.TeachingCourses)
+                foreach (Course course in teacher.TeachingCourses)
                 {
                     courses.Add(course);
                 }
             }
             lbCourse.ItemsSource = courses;
-
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON 檔案 (*.json)|*.json";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string fileContent = File.ReadAllText(openFileDialog.FileName);
+                    students = JsonSerializer.Deserialize<List<Student>>(fileContent);
+                    cmbStudent.ItemsSource = students;
+                    cmbStudent.SelectedIndex = 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"讀取Json檔錯誤，錯誤代碼：{ex.Message}");
+                }
+            }
         }
 
         private void InitializeStudent()
         {
-            students.Add(new Student { StudentId = "A1234567" , StudentName = "屎珍香" });
+            /*students.Add(new Student { StudentId = "A1234567" , StudentName = "屎珍香" });
             students.Add(new Student { StudentId = "A1234987" , StudentName = "王大名" });
             students.Add(new Student { StudentId = "A1234789" , StudentName = "菁雖小" });
-            students.Add(new Student { StudentId = "A1234765" , StudentName = "黯魔陰帝" });
+            students.Add(new Student { StudentId = "A1234765" , StudentName = "黯魔陰帝" });*/
 
             cmbStudent.ItemsSource = students;
             cmbStudent.SelectedIndex = 0;
@@ -98,12 +113,12 @@ namespace chooselesson
 
         private void tvTeacher_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (tvTeacher.SelectedItem is Teacher) 
+            if (tvTeacher.SelectedItem is Teacher)
             {
                 selectedTeacher = (Teacher)tvTeacher.SelectedItem; ;
-                labelStatus.Content = $"選取老師{selectedTeacher.ToString()}"; 
+                labelStatus.Content = $"選取老師{selectedTeacher.ToString()}";
             }
-            else if(tvTeacher.SelectedItem is Course)
+            else if (tvTeacher.SelectedItem is Course)
             {
                 selectedCourse = (Course)tvTeacher.SelectedItem;
                 labelStatus.Content = $"選取課程{selectedCourse.ToString()}";
@@ -112,21 +127,21 @@ namespace chooselesson
 
         private void lbCourse_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedCourse= (Course)lbCourse.SelectedItem;
+            selectedCourse = (Course)lbCourse.SelectedItem;
             labelStatus.Content = $"選取課程{selectedCourse.ToString()}";
         }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            if(selectedStudent== null || selectedCourse==null) 
+            if (selectedStudent == null || selectedCourse == null)
             {
                 MessageBox.Show("請選取學生或課程");
                 return;
             }
             else
             {
-                Record newRecord = new Record { SelectedStudent = selectedStudent, SelectedCourse = selectedCourse } ;
-                foreach(Record r in records)
+                Record newRecord = new Record { SelectedStudent = selectedStudent, SelectedCourse = selectedCourse };
+                foreach (Record r in records)
                 {
                     if (newRecord.Equals(r))
                     {
@@ -136,7 +151,7 @@ namespace chooselesson
                 }
                 records.Add(newRecord);
                 lvRecord.ItemsSource = records;
-                lvRecord.Items.Refresh();                            
+                lvRecord.Items.Refresh();
             }
         }
 
@@ -151,7 +166,7 @@ namespace chooselesson
 
         private void btnWithdrawl_Click(object sender, RoutedEventArgs e)
         {
-            if(selectedRecord!=null)
+            if (selectedRecord != null)
             {
                 records.Remove(selectedRecord);
                 lvRecord.Items.Refresh();
@@ -163,7 +178,7 @@ namespace chooselesson
             //開啟一個對話方塊將records內容存成json黨
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON files (*.json)|.json|All files (*.*)|*.*";
-            if(saveFileDialog.ShowDialog()==true)
+            if (saveFileDialog.ShowDialog() == true)
             {
                 var options = new JsonSerializerOptions
                 {
@@ -172,22 +187,11 @@ namespace chooselesson
                     Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
                 };
 
-                string json = JsonSerializer.Serialize(records,options);
-                File.WriteAllText(saveFileDialog.FileName, json ); 
+                string json = JsonSerializer.Serialize(records, options);
+                File.WriteAllText(saveFileDialog.FileName, json);
             }
         }
-
-       /* private void btnOpen_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter= "JSON files (*.json)|.json|All files (*.*)|*.*";
-            if(openFileDialog.ShowDialog()==true)
-            {
-                string fileContent = File.ReadAllText(openFileDialog.FileName);
-                T result = JsonSerializer.Deserialize<T>(fileContent);
-                return result;
-            }
-            return default(T);
-        }*/
     }
 }
+    
+
